@@ -1,11 +1,5 @@
 [
   {
-    "id": "1",
-    "name": "Allen Raymond",
-    "email": "nulla.ante@vestibul.co.uk",
-    "phone": "(992) 914-3792"
-  },
-  {
     "id": "2",
     "name": "Chaim Lewis",
     "email": "dui.in@egetlacus.ca",
@@ -60,15 +54,21 @@
     "phone": "(748) 206-2688"
   },
   {
-    "name": "Tomas",
+    "id": "430e207b-dbf2-4e19-8ad8-92dacab44882",
+    "name": "Tomas ANDERS",
     "email": "tomas@nonenimMauris.net",
-    "phone": "(044) 451-0000",
-    "id": "430e207b-dbf2-4e19-8ad8-92dacab44882"
+    "phone": "(044) 451-0000"
   },
   {
     "name": "Rita",
     "email": "rita@vestibul.co.uk",
     "phone": "(001) 738-2000",
     "id": "5468aee5-363b-483f-b660-fa3c47c0f5a9"
+  },
+  {
+    "id": "6c91f1bc-4a52-4c43-8fee-c43780103791",
+    "name": "Traus KENEDAN",
+    "email": "traus@egetlacus.ca",
+    "phone": "(444) 840-4445"
   }
 ]
