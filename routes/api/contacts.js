@@ -29,7 +29,8 @@ router.delete('/:id', validateId, async (req, res, next) => {
   const contact = await model.removeContact(id);
     if (contact) {
       console.log ("TEST: Contact deleted!!!")
-      return res.status(200).json({ message: 'Contact deleted.' })
+      // return res.status(200).json({ message: 'Contact deleted.' })
+      return res.status(200).json(contact)
     } 
   res.status(404).json({ message: 'Not found! :-(' })
 

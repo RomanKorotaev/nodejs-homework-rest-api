@@ -1,4 +1,4 @@
-import {MongoClient} from 'mongodb' // дописали флаг -r dotenv/config   в файл  package.json в скрипте "start:dev"
+import {MongoClient} from 'mongodb' // дописали флаг -r dotenv/config   в файл  package.json в скрипте "start:dev"  и "start" 
 
 // const { MongoClient } = require('mongodb');
 // const uri = "mongodb+srv://Roman:<password>@cluster0.kiz7z.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
