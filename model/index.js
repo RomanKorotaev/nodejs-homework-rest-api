@@ -50,7 +50,11 @@ const addContact =  async (body) => {
   const updateContact =  async (contactId, body) => {
     const collection = await  getCollection (db, 'contacts')
     const id= ObjectId(contactId);//в MongoDB мы не можем передавать id просто как строку. Его нужно преобразовать в класс ObjectId
-    const { value: result } = await collection.findOneAndUpdate({_id: id}, {$set: body}) //ВАЖНО не упустить модификатор $set б иначе всё перезатрёт
+    const { value: result } = await collection.findOneAndUpdate(
+      {_id: id},
+      {$set: body}, //ВАЖНО не упустить модификатор $set, иначе всё перезатрёт
+      {returnDocument: "after"}, //эта строка указывает, что нужно вернуть объект/контакт после внесённых изменений
+       ) 
     return result;
   }
   
