@@ -7,4 +7,3 @@ import updateContact from './updateContact';
 
 export default {listContacts, getContactById, removeContact, addContact, updateContact}
 
-
