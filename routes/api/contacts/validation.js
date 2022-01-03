@@ -1,4 +1,7 @@
-import Joi from 'joi'
+import Joi from 'joi';
+import pkg from 'mongoose';
+
+const {Types} =pkg;
 
 const createSchema = Joi.object ({
     name: Joi.string().min(2).max(30).required(),
@@ -62,14 +65,24 @@ export const updateStatusContact = async (req, res, next)=> {
     next();
 }
 
+// // Option #1
+// export const validateId = async (req, res, next)=> {
+//     try{
+//         const value = await idSchema.validateAsync(req.params)
+//     } catch (err){
+//         return res.status(400).json({message: ` ${err.message.replace(/"/g, '')}` })
+//     }
+//     next();
+// }
+
+
 export const validateId = async (req, res, next)=> {
-    try{
-        const value = await idSchema.validateAsync(req.params)
-    } catch (err){
-        return res.status(400).json({message: ` ${err.message.replace(/"/g, '')}` })
+    if (!Types.ObjectId.isValid(req.params.id) ) {
+        return res.status(400).json({message: 'Invalid ObjectId' })
     }
     next();
 }
+
 
 
 
