@@ -26,12 +26,26 @@ const registration = async (req, res, next) => {
 
 
   const login = async (req, res, next) => {
-    console.log (req.query)
-    // const contacts = await repositoryContacts.listContacts(req.query);
-    // console.log("!!! contacts",contacts)
-    // // res.status(200).json( contacts );
-    res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, data : {} } );
+    console.log (req.query);
+    const  {email, password} = req.body
+    const user = authService.getUser(email, password);
+
+    if (!user) {
+      return  res
+                .status(HttpCode.UNAUTHORIZED)
+                .json( {
+                  status: 'error',
+                  code: HttpCode.UNAUTHORIZED,
+                  message: 'Invalid credentials' 
+                });
+    }
+
+    const token = authService.getToken(user);
+    await authService.setToken(user.id, token)
+
+    res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, data : {token} } );
   }
+
 
   const logout = async (req, res, next) => {
     console.log (req.query)

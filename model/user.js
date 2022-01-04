@@ -67,6 +67,12 @@ const userSchema = new Schema({
       } 
       next();
   })
+
+  //methods - это объект мангуса, который хранит наши кастомные функции
+    userSchema.methods.isValidPassword = async function (password) {
+        //метод bcrypt.compare принимает 2 параметра: пароль и хеш. Сравнивает полученный пароль с тем, что хранится в хеше
+        return await bcrypt.compare (password, this.password)
+    }
   
   const User = model ('user', userSchema);
 
