@@ -29,7 +29,7 @@ const listContacts = async ({sortBy,
         result = result.select (filter.split('|').join(' ')) // 'name'
       }
 
-      result = await result.skip(skip).limit(limit).sort(sortCriteria)
+      result = await result.skip(Number(skip)).limit(Number(limit)).sort(sortCriteria)
 
     return {total, contacts: result};
   }

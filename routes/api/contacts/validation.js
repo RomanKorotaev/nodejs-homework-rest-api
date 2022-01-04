@@ -23,6 +23,17 @@ const updateStatusContactSchema = Joi.object ({
     favorite: Joi.bool().required(),
 });
 
+
+const regLimit = /\d+/
+
+const querySchema = Joi.object ({
+    limit: Joi.string().pattern(regLimit).optional(),
+    skip: Joi.number().min(0).optional(),
+    sortBy: Joi.string().valid('name', 'email').optional(),
+    sortByDesc: Joi.string().valid('name', 'email').optional(),
+    filter: Joi.string().pattern(new RegExp( '(name|email)\\|?(name|email)+' )).optional(),
+});
+
 const idSchema = Joi.object({id: Joi.string().required() })
 
 
@@ -83,9 +94,15 @@ export const validateId = async (req, res, next)=> {
     next();
 }
 
-
-
-
+// querySchema
+export const validateQuery = async (req, res, next)=> {
+    try{
+        const value = await querySchema.validateAsync(req.query)
+    } catch (err){
+        return res.status(400).json({message: ` ${err.message.replace(/"/g, '')}` })
+    }
+    next();
+}
 
 
 // import Joi from 'joi'

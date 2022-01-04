@@ -1,10 +1,19 @@
+// import { string } from 'joi';
+import {MIN_AGE, MAX_AGE} from '../lib/constants'
 import pkg from 'mongoose';
 const { Schema, model } = pkg;
+
 
 const contactSchema = new Schema({
     name: {
       type: String,
       required: [true, 'Set name for contact'],
+    },
+    age: {
+      type: String,
+      min: MIN_AGE,
+      max: MAX_AGE,
+      default: null,
     },
     email: {
       type: String,
