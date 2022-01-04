@@ -12,7 +12,7 @@ import {HttpCode} from '../../lib/constants'
     const contacts = await repositoryContacts.listContacts(req.query);
     console.log("!!! contacts",contacts)
     // res.status(200).json( contacts );
-    res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, data : {contacts} } );
+    res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, data : {...contacts} } );
   }
 
   

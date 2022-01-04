@@ -1,38 +1,18 @@
 import {Router} from "express";
 import pkg from 'mongoose'
-
+import {registration, login, logout} from '../../../controllers/auth'
 // import repositoryContacts from '../../../repository/contacts'
-
-
-// // !!!!
-// import ... from '../../../controllers/auth'
-
-// import  {validateCreate, validateUpdate, validateId, updateStatusContact} from './validation'
 
 
 const router = new Router()
 
+router.post('/signup', registration)
 
-// router.post('/', validateCreate, async (req, res, next) => { 
-router.post('/signup', async (req, res, next) => { 
-//   const newContact = await repositoryContacts.addContact(req.body); 
-//   res.status(201).json(newContact)
-})
+router.post('/login', login)
 
-router.post('/login', async (req, res, next) => { 
-    // const newContact = await repositoryContacts.addContact(req.body); 
-    // res.status(201).json(newContact)
-  })
+router.post('/logout', logout)
 
-  router.post('/logout', async (req, res, next) => { 
-    // const newContact = await repositoryContacts.addContact(req.body); 
-    // res.status(201).json(newContact)
-  })
-
-  router.post('/current', async (req, res, next) => { 
-    // const newContact = await repositoryContacts.addContact(req.body); 
-    // res.status(201).json(newContact)
-  })
+// router.post('/current', )
 
 
 
