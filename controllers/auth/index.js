@@ -26,19 +26,19 @@ const registration = async (req, res, next) => {
 
 
   const login = async (req, res, next) => {
-    // console.log (req.query)
+    console.log (req.query)
     // const contacts = await repositoryContacts.listContacts(req.query);
     // console.log("!!! contacts",contacts)
     // // res.status(200).json( contacts );
-    // res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, data : {...contacts} } );
+    res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, data : {} } );
   }
 
   const logout = async (req, res, next) => {
-    // console.log (req.query)
+    console.log (req.query)
     // const contacts = await repositoryContacts.listContacts(req.query);
     // console.log("!!! contacts",contacts)
     // // res.status(200).json( contacts );
-    // res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, data : {...contacts} } );
+    res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, data : {} } );
   }
 
 

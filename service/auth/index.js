@@ -6,6 +6,16 @@ class AuthService {
         return !!user          // !!user  convert to boolean type
 
     }
+
+    async create (body) {
+        const {id, name, email, role} = await Users.create(body);
+        return {
+            id,
+            name,
+            email,
+            role,
+        }
+    }
 }
 
 export default AuthService;

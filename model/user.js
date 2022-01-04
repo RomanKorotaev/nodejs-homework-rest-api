@@ -1,5 +1,7 @@
 import {Role, MIN_AGE, MAX_AGE} from '../lib/constants'
 import pkg from 'mongoose';
+// import bcrypt from 'bcryptjs/dist/bcrypt';
+import bcrypt from 'bcryptjs';
 const { Schema, model } = pkg;
 
 
@@ -57,6 +59,14 @@ const userSchema = new Schema({
 
 
   //TODO
+
+  userSchema.pre ('save', async function (next) {
+      if (this.isModified ('password')){
+        const salt = await bcrypt.genSalt(6)
+        this.password = await bcrypt.hash (this.password, salt)
+      } 
+      next();
+  })
   
   const User = model ('user', userSchema);
 
