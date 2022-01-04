@@ -1,7 +1,16 @@
 import {Router} from "express";
-import { getContacts, getContactById, addContact,  removeContact, updateContact } from '../../../controllers/contacts/index'
+import { getContacts,
+        getContactById,
+        addContact,
+        removeContact,
+        updateContact 
+    } from '../../../controllers/contacts/index'
 
-import  {validateCreate, validateUpdate, validateId, updateStatusContact} from './validation'
+import  {validateCreate,
+        validateUpdate,
+        validateId,
+        updateStatusContact
+    } from './validation'
 
 
 const router = new Router()
@@ -17,7 +26,6 @@ router.delete('/:id', validateId, removeContact)
 router.put('/:id', validateUpdate, validateId, updateContact)
 
 router.patch('/:id/favorite', validateId, updateStatusContact, updateContact)
-
 
 
 export default router;

@@ -1,5 +1,5 @@
 import repositoryContacts from '../../repository/contacts'
-// import {HttpCode} from '../../../lib/constants'
+import {HttpCode} from '../../lib/constants'
 
 
 // router.get('/', async (req, res, next) => {
@@ -8,12 +8,13 @@ import repositoryContacts from '../../repository/contacts'
 //     res.status(200).json( contacts );
 //   })
     const getContacts = async (req, res, next) => {
-    const contacts = await repositoryContacts.listContacts();
+      console.log (req.query)
+    const contacts = await repositoryContacts.listContacts(req.query);
     console.log("!!! contacts",contacts)
-    res.status(200).json( contacts );
+    // res.status(200).json( contacts );
+    res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, data : {contacts} } );
   }
 
-  
   
 //   router.get('/:id', validateId, async (req, res, next) => {
 //     const {id} = req.params;
@@ -29,23 +30,20 @@ import repositoryContacts from '../../repository/contacts'
     const contact = await repositoryContacts.getContactById(id);
     console.log(contact); //toObject
     if (contact) {
-      return res.status(200).json(contact) //toJSON
+      return res.status(HttpCode.OK).json({status: 'success', code: HttpCode.OK, data : {contact} }) //toJSON
     } 
-    res.status(404).json({ message: 'Not found! :-(' })
+    res.status(HttpCode.NOT_FOUND).json({ status: 'error', code: HttpCode.NOT_FOUND, message: 'Not found! :-(' })
   }
   
-
 //   router.post('/', validateCreate, async (req, res, next) => { 
 //     const newContact = await repositoryContacts.addContact(req.body); 
 //     res.status(201).json(newContact)
 //   })
 const addContact = async (req, res, next) => { 
     const newContact = await repositoryContacts.addContact(req.body); 
-    res.status(201).json(newContact)
+    res.status(HttpCode.CREATED).json({status: 'success', code: HttpCode.CREATED, data : {contact: newContact} })
   }
   
-
-
 
 //   router.delete('/:id', validateId, async (req, res, next) => {
 //     const {id} = req.params;
@@ -64,9 +62,9 @@ const removeContact = async (req, res, next) => {
       if (contact) {
         console.log ("TEST: Contact deleted!!!")
         // return res.status(200).json({ message: 'Contact deleted.' })
-        return res.status(200).json(contact)
+        return res.status(HttpCode.OK).json({status: 'success', code: HttpCode.OK, data : {contact} });
       } 
-    res.status(404).json({ message: 'Not found! :-(' })
+      res.status(HttpCode.NOT_FOUND).json({ status: 'error', code: HttpCode.NOT_FOUND, message: 'Not found! :-(' })
   
   }
 
@@ -85,9 +83,9 @@ const updateContact = async (req, res, next) => {
     const contact = await repositoryContacts.updateContact(id, req.body);
       if (contact ) {
         console.log ("TEST: Contact putted!")
-        return res.status(200).json(contact)
+        return res.status(HttpCode.OK).json({status: 'success', code: HttpCode.OK, data : {contact} });
       } 
-    res.status(404).json({ message: 'Not found! :-(' })
+      res.status(HttpCode.NOT_FOUND).json({ status: 'error', code: HttpCode.NOT_FOUND, message: 'Not found! :-(' })
   }
   
 
