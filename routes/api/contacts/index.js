@@ -14,19 +14,21 @@ import  {validateCreate,
     } from './validation'
 
 
+import guard from '../../../middlewares/guard'
+
 const router = new Router()
 
-router.get('/', validateQuery, getContacts)
+router.get('/', [guard, validateQuery], getContacts)
 
-router.get('/:id', validateId, getContactById)
+router.get('/:id', [guard, validateId], getContactById)
 
-router.post('/', validateCreate,  addContact)
+router.post('/', [guard, validateCreate],  addContact)
 
-router.delete('/:id', validateId, removeContact)
+router.delete('/:id', [guard, validateId], removeContact)
 
-router.put('/:id', validateUpdate, validateId, updateContact)
+router.put('/:id', [guard, validateUpdate, validateId], updateContact)
 
-router.patch('/:id/favorite', validateId, updateStatusContact, updateContact)
+router.patch('/:id/favorite', [guard, validateId, updateStatusContact], updateContact)
 
 
 export default router;

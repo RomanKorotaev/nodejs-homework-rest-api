@@ -28,7 +28,7 @@ const registration = async (req, res, next) => {
   const login = async (req, res, next) => {
     console.log (req.query);
     const  {email, password} = req.body
-    const user = authService.getUser(email, password);
+    const user =  await authService.getUser(email, password);
 
     if (!user) {
       return  res
@@ -49,10 +49,11 @@ const registration = async (req, res, next) => {
 
   const logout = async (req, res, next) => {
     console.log (req.query)
-    // const contacts = await repositoryContacts.listContacts(req.query);
-    // console.log("!!! contacts",contacts)
-    // // res.status(200).json( contacts );
-    res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, data : {} } );
+    
+    await authService.setToken(req.user.id, null);
+    res
+    .status(HttpCode.NO_CONTENT)
+    .json( {status: 'success', code: HttpCode.OK, data : {} } );
   }
 
 
