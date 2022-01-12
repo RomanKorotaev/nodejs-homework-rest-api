@@ -9,7 +9,8 @@ import {HttpCode} from '../../lib/constants'
 //   })
     const getContacts = async (req, res, next) => {
       console.log (req.query)
-    const contacts = await repositoryContacts.listContacts(req.query);
+      const {id: userId} = req.user
+    const contacts = await repositoryContacts.listContacts(userId, req.query);
     console.log("!!! contacts",contacts)
     // res.status(200).json( contacts );
     res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, data : {...contacts} } );
@@ -27,7 +28,8 @@ import {HttpCode} from '../../lib/constants'
 //   })
   const getContactById = async (req, res, next) => {
     const {id} = req.params;
-    const contact = await repositoryContacts.getContactById(id);
+    const {id: userId} = req.user;
+    const contact = await repositoryContacts.getContactById(userId, id);
     console.log(contact); //toObject
     if (contact) {
       return res.status(HttpCode.OK).json({status: 'success', code: HttpCode.OK, data : {contact} }) //toJSON
@@ -39,8 +41,9 @@ import {HttpCode} from '../../lib/constants'
 //     const newContact = await repositoryContacts.addContact(req.body); 
 //     res.status(201).json(newContact)
 //   })
-const addContact = async (req, res, next) => { 
-    const newContact = await repositoryContacts.addContact(req.body); 
+const addContact = async (req, res, next) => {
+  const {id: userId} = req.user; 
+    const newContact = await repositoryContacts.addContact(userId, req.body); 
     res.status(HttpCode.CREATED).json({status: 'success', code: HttpCode.CREATED, data : {contact: newContact} })
   }
   
@@ -58,7 +61,8 @@ const addContact = async (req, res, next) => {
 //   })
 const removeContact = async (req, res, next) => {
     const {id} = req.params;
-    const contact = await repositoryContacts.removeContact(id);
+    const {id: userId} = req.user;
+    const contact = await repositoryContacts.removeContact(userId, id);
       if (contact) {
         console.log ("TEST: Contact deleted!!!")
         // return res.status(200).json({ message: 'Contact deleted.' })
@@ -80,7 +84,8 @@ const removeContact = async (req, res, next) => {
 //   })
 const updateContact = async (req, res, next) => {
     const {id} = req.params;
-    const contact = await repositoryContacts.updateContact(id, req.body);
+    const {id: userId} = req.user;
+    const contact = await repositoryContacts.updateContact(userId, id, req.body);
       if (contact ) {
         console.log ("TEST: Contact putted!")
         return res.status(HttpCode.OK).json({status: 'success', code: HttpCode.OK, data : {contact} });

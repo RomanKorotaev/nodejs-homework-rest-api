@@ -33,10 +33,18 @@ const userSchema = new Schema({
           },
           dafault: Role.USER,
       },
+
+      subscription: {
+        type: String,
+        enum: ["starter", "pro", "business"],
+        default: "starter"
+      },
+
       token: {
           type: String,
           default: null,
-      }
+      },
+
 
   },
 
