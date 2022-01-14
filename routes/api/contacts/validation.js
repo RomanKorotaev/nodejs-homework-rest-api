@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import pkg from 'mongoose';
+import { MAX_AGE, MIN_AGE } from '../../../lib/constants'
 
 const {Types} =pkg;
 
@@ -7,6 +8,7 @@ const createSchema = Joi.object ({
     name: Joi.string().min(2).max(30).required(),
     email:Joi.string().email().required(),
     phone:Joi.string().required(),
+    age: Joi.number().integer().min(MIN_AGE).max(MAX_AGE).optional(),
     favorite: Joi.bool().optional(),
 });
 
@@ -15,8 +17,9 @@ const updateSchema = Joi.object ({
     name: Joi.string().optional(),
     email:Joi.string().email().optional(),
     phone:Joi.string().optional(),
+    age: Joi.number().integer().min(MIN_AGE).max(MAX_AGE).optional(),
     favorite: Joi.bool().optional(),
-}).or ('name', 'email', 'phone');
+}).or ('name', 'email', 'phone', 'age');
 
 
 const updateStatusContactSchema = Joi.object ({
