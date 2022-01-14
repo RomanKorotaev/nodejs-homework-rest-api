@@ -1,6 +1,6 @@
 import {Router} from "express";
 
-import {registration, login, logout} from '../../../controllers/auth';
+import {registration, login, logout, current} from '../../../controllers/auth';
 import guard from '../../../middlewares/guard';
 
 // import pkg from 'mongoose' ;
@@ -14,7 +14,7 @@ router.post('/login', login)
 
 router.post('/logout', guard, logout)
 
-// router.post('/current', )
+router.get('/current', guard, current )
 
 
 

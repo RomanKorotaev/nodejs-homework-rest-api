@@ -57,6 +57,30 @@ const registration = async (req, res, next) => {
   }
 
 
-export {registration, login, logout }
+  const current = async (req, res, next) => {
+    console.log (req.query)
+    
+    // const {email} = req.body;
+    // const isUserExist = await authService.isUserExist(email);
+
+    // if (isUserExist) {
+    //   return  res
+    //             .status(HttpCode.OK)
+    //             .json( {
+    //               status: 'success',
+    //               code: HttpCode.OK,
+    //               data : {email},
+    //               message: `email:  ${email}`
+    //             });
+    // }
+
+   
+
+  res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, message: "Test of route /current is successful!"  });
+  }
+
+  
+
+export {registration, login, logout, current }
 
 
