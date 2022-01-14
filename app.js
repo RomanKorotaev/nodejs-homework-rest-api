@@ -19,6 +19,8 @@ app.use(cors())
 app.use(express.json({limit: LIMIT_JSON})) //json
 // app.use (express.urlencoded({extended: false})) //forms
 
+app.use(express.static('public'));
+
 app.use('/api/contacts', contactsRouter);
 app.use('/api/users', authRouter);
 
