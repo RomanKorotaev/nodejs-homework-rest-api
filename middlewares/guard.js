@@ -17,7 +17,7 @@ const verifyToken = (token) => {
 const guard = async (req, res, next) => {
     const token = req.get('authorization')?.split(' ')[1]
 
-console.log ("TEST", req.get ('authorization'))
+console.log ("TEST - 'authorization' ", req.get ('authorization'))
 
     const isValidToken = verifyToken(token);
 

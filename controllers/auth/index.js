@@ -58,25 +58,22 @@ const registration = async (req, res, next) => {
 
 
   const current = async (req, res, next) => {
-    console.log (req.query)
-    
-    // const {email} = req.body;
-    // const isUserExist = await authService.isUserExist(email);
-
-    // if (isUserExist) {
-    //   return  res
-    //             .status(HttpCode.OK)
-    //             .json( {
-    //               status: 'success',
-    //               code: HttpCode.OK,
-    //               data : {email},
-    //               message: `email:  ${email}`
-    //             });
-    // }
-
    
+    const token = req.get('authorization')?.split(' ')[1];
 
-  res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, message: "Test of route /current is successful!"  });
+    const data =  await authService.currentUser (token) 
+    const {email,subscription } = data 
+
+      return  res
+                .status(HttpCode.OK)
+                .json( {
+                  status: 'success',
+                  code: HttpCode.OK,
+                  data : {email, subscription},
+                  
+                  message: `email:  ${email} , subscription: ${subscription}`
+                });
+   
   }
 
   

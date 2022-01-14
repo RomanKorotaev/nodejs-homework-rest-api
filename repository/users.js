@@ -17,4 +17,12 @@ const updateToken = async (id, token) => {
     return await User.updateOne ({_id: id}, {token})
 }
 
-export default {findById, findByEmail, create, updateToken }
+
+
+const findByToken =  (token) => {
+    return  User.findOne({token});
+}
+
+
+
+export default {findById, findByEmail, create, updateToken,  findByToken }

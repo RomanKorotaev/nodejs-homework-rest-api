@@ -39,6 +39,15 @@ class AuthService {
     async setToken (id, token) {
         await Users.updateToken (id, token)
     }
+
+
+
+     currentUser (token) {
+        let data =  Users.findByToken(token)
+        console.log ("async currentUser = ", data)
+        return data         
+    }
+
 }
 
 

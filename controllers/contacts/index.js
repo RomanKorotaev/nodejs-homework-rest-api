@@ -8,7 +8,9 @@ import {HttpCode} from '../../lib/constants'
 //     res.status(200).json( contacts );
 //   })
     const getContacts = async (req, res, next) => {
-      console.log (req.query)
+      console.log ("req.query = ", req.query);
+      console.log ("req.body = ", req.body)
+      
       const {id: userId} = req.user
     const contacts = await repositoryContacts.listContacts(userId, req.query);
     console.log("!!! contacts",contacts)
