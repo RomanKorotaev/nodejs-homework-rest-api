@@ -2,6 +2,9 @@ import {Role, MIN_AGE, MAX_AGE} from '../lib/constants'
 import pkg from 'mongoose';
 // import bcrypt from 'bcryptjs/dist/bcrypt';
 import bcrypt from 'bcryptjs';
+import gravatar from 'gravatar';
+
+
 const { Schema, model } = pkg;
 
 
@@ -44,6 +47,14 @@ const userSchema = new Schema({
           type: String,
           default: null,
       },
+
+      avatarURL: {
+        type: String,
+        default: function() {
+          return gravatar.url(this.email, {s: '250' }, true)
+        },
+    },
+
   },
 
    {

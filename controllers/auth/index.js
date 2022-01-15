@@ -1,5 +1,10 @@
 import {HttpCode} from '../../lib/constants'
 import AuthService from '../../service/auth';
+import {
+  UploadFileService,
+  LocalFileStorage,
+  CloudFileStorage
+} from '../../service/file-storage';
 
 const authService = new  AuthService();
 
@@ -78,10 +83,18 @@ const registration = async (req, res, next) => {
 
 
   const uploadAvatar = async (req, res, next) => {
-  
+    
+    const uploadService = new UploadFileService (
+      LocalFileStorage,
+      req.file,
+      req.user,
+      )
+
+    const avatarUrl = await uploadService.updateAvatar()
+
     res
     .status(HttpCode.OK)
-    .json( {status: 'success', code: HttpCode.OK, message: 'Success'} );
+    .json( {status: 'success', code: HttpCode.OK, data: {avatarUrl}  });
   }
 
 export {registration, login, logout, current, uploadAvatar }
