@@ -5,6 +5,7 @@ import {
   LocalFileStorage,
   CloudFileStorage
 } from '../../service/file-storage';
+import CloudStorage from '../../service/file-storage/cloud-storage';
 
 const authService = new  AuthService();
 
@@ -85,7 +86,9 @@ const registration = async (req, res, next) => {
   const uploadAvatar = async (req, res, next) => {
     
     const uploadService = new UploadFileService (
-      LocalFileStorage,
+      
+      // LocalFileStorage,
+      CloudStorage,
       req.file,
       req.user,
       )
