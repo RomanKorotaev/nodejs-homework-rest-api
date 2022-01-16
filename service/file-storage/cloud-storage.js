@@ -1,6 +1,5 @@
 import {v2 as cloudinary } from 'cloudinary'
 import {promisify} from 'util'
-// import { CLOUD_FOLDER_AVATARS } from '../../lib/constants'
 import {CLOUD_FOLDER_AVATARS} from '../../lib/constants'
 import Users from '../../repository/users';
 import {unlink} from 'fs/promises'
