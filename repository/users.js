@@ -21,8 +21,8 @@ const findByToken =  (token) => {
     return  User.findOne({token});
 }
 
-const updateAvatar = async (id, avatar) => {
-    return await User.updateOne ({_id: id}, {avatar})
+const updateAvatar = async (id, avatar, idAvatarCloud= null) => {
+    return await User.updateOne ({_id: id}, {avatar, idAvatarCloud})
 }
 
 
