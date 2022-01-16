@@ -1,9 +1,14 @@
-import Joi from 'joi'
+import Joi from 'joi';
+import pkg from 'mongoose';
+import { MAX_AGE, MIN_AGE } from '../../../lib/constants'
+
+const {Types} =pkg;
 
 const createSchema = Joi.object ({
     name: Joi.string().min(2).max(30).required(),
     email:Joi.string().email().required(),
     phone:Joi.string().required(),
+    age: Joi.number().integer().min(MIN_AGE).max(MAX_AGE).optional(),
     favorite: Joi.bool().optional(),
 });
 
@@ -12,12 +17,24 @@ const updateSchema = Joi.object ({
     name: Joi.string().optional(),
     email:Joi.string().email().optional(),
     phone:Joi.string().optional(),
+    age: Joi.number().integer().min(MIN_AGE).max(MAX_AGE).optional(),
     favorite: Joi.bool().optional(),
-}).or ('name', 'email', 'phone');
+}).or ('name', 'email', 'phone', 'age');
 
 
 const updateStatusContactSchema = Joi.object ({
     favorite: Joi.bool().required(),
+});
+
+
+const regLimit = /\d+/
+
+const querySchema = Joi.object ({
+    limit: Joi.string().pattern(regLimit).optional(),
+    skip: Joi.number().min(0).optional(),
+    sortBy: Joi.string().valid('name', 'email').optional(),
+    sortByDesc: Joi.string().valid('name', 'email').optional(),
+    filter: Joi.string().pattern(new RegExp( '(name|email)\\|?(name|email)+' )).optional(),
 });
 
 const idSchema = Joi.object({id: Joi.string().required() })
@@ -62,17 +79,33 @@ export const updateStatusContact = async (req, res, next)=> {
     next();
 }
 
+// // Option #1
+// export const validateId = async (req, res, next)=> {
+//     try{
+//         const value = await idSchema.validateAsync(req.params)
+//     } catch (err){
+//         return res.status(400).json({message: ` ${err.message.replace(/"/g, '')}` })
+//     }
+//     next();
+// }
+
+
 export const validateId = async (req, res, next)=> {
+    if (!Types.ObjectId.isValid(req.params.id) ) {
+        return res.status(400).json({message: 'Invalid ObjectId' })
+    }
+    next();
+}
+
+// querySchema
+export const validateQuery = async (req, res, next)=> {
     try{
-        const value = await idSchema.validateAsync(req.params)
+        const value = await querySchema.validateAsync(req.query)
     } catch (err){
         return res.status(400).json({message: ` ${err.message.replace(/"/g, '')}` })
     }
     next();
 }
-
-
-
 
 
 // import Joi from 'joi'
