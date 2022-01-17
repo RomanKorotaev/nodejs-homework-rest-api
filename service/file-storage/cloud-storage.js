@@ -37,8 +37,7 @@ class CloudStorage {
 
      }    
 
-
-     //////////////
+//It works! :)
      async removeUploadFile(filePath) {
         try {
           await unlink(filePath)
