@@ -17,12 +17,14 @@ const updateToken = async (id, token) => {
     return await User.updateOne ({_id: id}, {token})
 }
 
-
-
 const findByToken =  (token) => {
     return  User.findOne({token});
 }
 
+const updateAvatar = async (id, avatar, idAvatarCloud= null) => {
+    return await User.updateOne ({_id: id}, {avatar, idAvatarCloud})
+}
 
 
-export default {findById, findByEmail, create, updateToken,  findByToken }
+
+export default {findById, findByEmail, create, updateToken,  findByToken, updateAvatar }

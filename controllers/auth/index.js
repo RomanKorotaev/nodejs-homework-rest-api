@@ -1,28 +1,35 @@
 import {HttpCode} from '../../lib/constants'
-import AuthService from '../../service/auth';
+import authService from '../../service/auth';
+import {
+  UploadFileService,
+  LocalFileStorage,
+  CloudFileStorage
+} from '../../service/file-storage';
 
-const authService = new  AuthService();
+import CloudStorage from '../../service/file-storage/cloud-storage';
 
 const registration = async (req, res, next) => {
-    const {email} = req.body;
-    const isUserExist = await authService.isUserExist(email);
+    try {
+      const {email} = req.body;
+      const isUserExist = await authService.isUserExist(email);
 
-    if (isUserExist) {
-      return  res
-                .status(HttpCode.CONFLICT)
-                .json( {
-                  status: 'error',
-                  code: HttpCode.CONFLICT,
-                  message: 'Email is already exist' 
-                });
+      if (isUserExist) {
+        return  res
+                  .status(HttpCode.CONFLICT)
+                  .json( {
+                    status: 'error',
+                    code: HttpCode.CONFLICT,
+                    message: 'Email is already exist' 
+                  });
+      }
+
+      const data = await authService.create (req.body)
+
+      res.status(HttpCode.CREATED).json( {status: 'success', code: HttpCode.CREATED, data  });
+    } catch (err){
+        next (err);
     }
-
-    const data = await authService.create (req.body)
-
-  res.status(HttpCode.OK).json( {status: 'success', code: HttpCode.OK, data  });
 }
-
-
 
 
   const login = async (req, res, next) => {
@@ -76,8 +83,24 @@ const registration = async (req, res, next) => {
    
   }
 
-  
 
-export {registration, login, logout, current }
+  const uploadAvatar = async (req, res, next) => {
+    
+    const uploadService = new UploadFileService (
+      
+      // LocalFileStorage,
+      CloudStorage,
+      req.file,
+      req.user,
+      )
+
+    const avatarUrl = await uploadService.updateAvatar()
+
+    res
+    .status(HttpCode.OK)
+    .json( {status: 'success', code: HttpCode.OK, data: {avatarUrl}  });
+  }
+
+export {registration, login, logout, current, uploadAvatar }
 
 
