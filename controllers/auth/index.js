@@ -7,6 +7,13 @@ import {
 } from '../../service/file-storage';
 
 import CloudStorage from '../../service/file-storage/cloud-storage';
+import {
+  EmailService,
+  SenderNodemailer,
+  SenderSendgrid
+} from'../../service/email'
+
+import repositoryUsers from '../../repository/users'
 
 const registration = async (req, res, next) => {
     try {
@@ -23,9 +30,26 @@ const registration = async (req, res, next) => {
                   });
       }
 
-      const data = await authService.create (req.body)
+      const userData = await authService.create(req.body)
 
-      res.status(HttpCode.CREATED).json( {status: 'success', code: HttpCode.CREATED, data  });
+const emailService = new EmailService(
+    process.env.NODE_ENV,
+    new SenderSendgrid()
+  )
+
+  const isSend= await emailService.sendVerifyEmail(
+     email,
+     userData.name,
+     userData.verifyTokenEmail,
+    )
+
+    delete userData.verifyTokenEmail
+
+      res.status(HttpCode.CREATED).json( {
+        status: 'success',
+        code: HttpCode.CREATED,
+        data: {...userData, isSendEmailVerify: isSend}
+        });
     } catch (err){
         next (err);
     }
@@ -101,6 +125,55 @@ const registration = async (req, res, next) => {
     .json( {status: 'success', code: HttpCode.OK, data: {avatarUrl}  });
   }
 
-export {registration, login, logout, current, uploadAvatar }
+
+
+
+  //////////
+
+  const verifyUser = async (req, res, next) => {
+    const verifyToken = req.params.token
+
+    const userFromToken = repositoryUsers.findByVerifyToken(verifyToken)
+    
+    if (userFromToken) {
+      await repositoryUsers.updateVerify (userFromToken.id, true)
+    
+      res
+        .status(HttpCode.OK)
+        .json( {status: 'success', code: HttpCode.OK, data: {message: 'success'}  });
+
+    }
+
+    res
+    .status(HttpCode.BAD_REQUEST)
+    .json( {status: 'success', code: HttpCode.BAD_REQUEST, data: {message: 'Invalid token'}  });
+
+    
+    
+  }
+
+  ////////////
+
+  const repeatEmailForVerifyUser = async (req, res, next) => {
+    
+    const uploadService = new UploadFileService (
+      
+      // LocalFileStorage,
+      CloudStorage,
+      req.file,
+      req.user,
+      )
+
+    const avatarUrl = await uploadService.updateAvatar()
+
+    res
+    .status(HttpCode.OK)
+    .json( {status: 'success', code: HttpCode.OK, data: {avatarUrl}  });
+  }
+
+
+
+
+export {registration, login, logout, current, uploadAvatar, verifyUser, repeatEmailForVerifyUser }
 
 

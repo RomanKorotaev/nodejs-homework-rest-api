@@ -1,5 +1,6 @@
 import {Role, MIN_AGE, MAX_AGE} from '../lib/constants'
 import pkg from 'mongoose';
+import {randomUUID} from 'crypto';
 // import bcrypt from 'bcryptjs/dist/bcrypt';
 import bcrypt from 'bcryptjs';
 import gravatar from 'gravatar';
@@ -58,9 +59,20 @@ const userSchema = new Schema({
       idAvatarCloud: {
         type: String,
         default: null,
-      }
+      },
+
+      isVerify: { 
+        type: Boolean,
+        default: false,
+      },
+
+      verifyTokenEmail: {
+        type: String,
+        default: randomUUID(),
+      },
 
   },
+
 
    {
        versionKey: false,
