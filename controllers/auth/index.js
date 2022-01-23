@@ -132,14 +132,13 @@ const emailService = new EmailService(
   const verifyUser = async (req, res, next) => {
     const verifyToken = req.params.token
 
-    const userFromToken = repositoryUsers.findByVerifyToken(verifyToken)
+    const userFromToken = await repositoryUsers.findByVerifyToken(verifyToken)
     
     if (userFromToken) {
       await repositoryUsers.updateVerify (userFromToken.id, true)
     
-      res
-        .status(HttpCode.OK)
-        .json( {status: 'success', code: HttpCode.OK, data: {message: 'Success'}  });
+      return res.status(HttpCode.OK).json({
+        status: 'success', code: HttpCode.OK, data: {message: 'Success'}  });
     }
 
     res
