@@ -42,8 +42,6 @@ class AuthService {
         await Users.updateToken (id, token)
     }
 
-
-
      currentUser (token) {
         let data =  Users.findByToken(token)
         console.log ("async currentUser = ", data)
@@ -51,7 +49,6 @@ class AuthService {
     }
 
 }
-
 
 
 export default new  AuthService();

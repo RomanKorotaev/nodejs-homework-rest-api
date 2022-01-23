@@ -5,7 +5,7 @@ class EmailService {
         this.sender = sender
         switch(env){
             case 'development':
-                this.link = 'https://2abc-212-80-48-14.ngrok.io'
+                this.link = 'https://9829-212-80-48-14.ngrok.io'
                 break
             case 'test':
                 this.link = 'http://localhost:3000/'
@@ -15,7 +15,6 @@ class EmailService {
                 break
                 default :
                 this.link = 'http://localhost:3000/'
-
 
         }
     }
@@ -50,19 +49,26 @@ class EmailService {
     }
 
     async sendVerifyEmail (email, username, verifyToken) {
+        console.log ('sendVerifyEmail = email ', email )
+        console.log ('sendVerifyEmail = username', username )
+        console.log ('sendVerifyEmail = verifyToken',  verifyToken )
+
         const emailBody = this.createEmailTemplate ( username, verifyToken)
         const msg = {
             to: email,
             subject: 'Verify email',
             html: emailBody
         }
+        
+        console.log ('!this.sender = ', this.sender)
+        
         try {
             const result = await this.sender.send(msg)
-        
-            console.log (result)
+            console.log ('result  = ', result)
             return true
         } catch (error) {
             console.error(error.message)
+            console.log ('error = ', error)
             return false
         }
     }

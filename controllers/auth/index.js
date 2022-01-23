@@ -127,9 +127,6 @@ const emailService = new EmailService(
     .json( {status: 'success', code: HttpCode.OK, data: {avatarUrl}  });
   }
 
-
-
-
   //////////
 
   const verifyUser = async (req, res, next) => {
@@ -163,7 +160,8 @@ const emailService = new EmailService(
     const user = await repositoryUsers.findByEmail(email)
 
     if (user) {
-      const {email, name, verifyTokenEmail} = user      
+      const {email, name, verifyTokenEmail} = user  
+      console.log ( "name ", name )
       const emailService = new EmailService(
           process.env.NODE_ENV,
           new SenderNodemailer()
