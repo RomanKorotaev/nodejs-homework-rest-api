@@ -1,6 +1,6 @@
 import {Router} from "express";
 
-import {registration, login, logout, current, uploadAvatar} from '../../../controllers/auth';
+import {registration, login, logout, current, uploadAvatar, verifyUser, repeatEmailForVerifyUser} from '../../../controllers/auth';
 import guard from '../../../middlewares/guard';
 import { upload } from '../../../middlewares/upload';
 import limiter from '../../../middlewares/rate-limit';
@@ -20,5 +20,9 @@ router.get('/current', guard, current )
 
 ///////////////
 router.patch('/avatars', guard, upload.single('avatar'), uploadAvatar)
+
+router.get('/verify/:token',  verifyUser )
+
+router.post('/verify',  repeatEmailForVerifyUser )
 
 export default router;

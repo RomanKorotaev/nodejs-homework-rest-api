@@ -15,6 +15,8 @@ import {
 
 import repositoryUsers from '../../repository/users'
 
+
+
 const registration = async (req, res, next) => {
     try {
       const {email} = req.body;
@@ -140,15 +142,16 @@ const emailService = new EmailService(
     
       res
         .status(HttpCode.OK)
-        .json( {status: 'success', code: HttpCode.OK, data: {message: 'success'}  });
-
+        .json( {status: 'success', code: HttpCode.OK, data: {message: 'Success'}  });
     }
 
     res
     .status(HttpCode.BAD_REQUEST)
-    .json( {status: 'success', code: HttpCode.BAD_REQUEST, data: {message: 'Invalid token'}  });
-
-    
+    .json({
+      status: 'success',
+      code: HttpCode.BAD_REQUEST,
+      data: {message: 'Invalid token'}
+      });
     
   }
 
@@ -156,22 +159,45 @@ const emailService = new EmailService(
 
   const repeatEmailForVerifyUser = async (req, res, next) => {
     
-    const uploadService = new UploadFileService (
-      
-      // LocalFileStorage,
-      CloudStorage,
-      req.file,
-      req.user,
-      )
+    const {email} = req.body
+    const user = await repositoryUsers.findByEmail(email)
 
-    const avatarUrl = await uploadService.updateAvatar()
+    if (user) {
+      const {email, name, verifyTokenEmail} = user      
+      const emailService = new EmailService(
+          process.env.NODE_ENV,
+          new SenderNodemailer()
+        )
+        
+      const isSend= await emailService.sendVerifyEmail(
+          email,
+          name,
+          verifyTokenEmail,
+        )
 
-    res
-    .status(HttpCode.OK)
-    .json( {status: 'success', code: HttpCode.OK, data: {avatarUrl}  });
+        if (isSend) {
+            return res.status(HttpCode.OK).json({
+          status: 'success',
+          code: HttpCode.OK,
+          data: {message: 'Success'}
+          });
+        }   
+
+        return res.status(HttpCode.UE).json({
+          status: 'error',
+          code: HttpCode.UE,
+          data: {message: 'Unprocessable Entity'}
+          });
+        
+    }
+
+     res.status(HttpCode.NOT_FOUND).json({
+      status: 'error',
+      code: HttpCode.NOT_FOUND,
+      data: {message: 'User with email not found'}
+     });
+ 
   }
-
-
 
 
 export {registration, login, logout, current, uploadAvatar, verifyUser, repeatEmailForVerifyUser }
