@@ -8,14 +8,14 @@ class EmailService {
                 this.link = ' https://4ae3-212-80-48-14.ngrok.io'
                 break
             case 'test':
-                this.link = 'http://localhost:3000/'
+                this.link = 'http://localhost:3000'
                 break
             case 'production':
-                this.link = 'http://heroku/'
-                // this.link = 'https://c62d-212-80-48-14.ngrok.io'
+                this.link = 'https://api-35-lisson11a.herokuapp.com'
+                
                 break
                 default :
-                this.link = 'http://localhost:3000/'
+                this.link = 'http://localhost:3000'
 
         }
     }
