@@ -5,13 +5,14 @@ class EmailService {
         this.sender = sender
         switch(env){
             case 'development':
-                this.link = 'https://4d79-212-80-48-14.ngrok.io'
+                this.link = ' https://4ae3-212-80-48-14.ngrok.io'
                 break
             case 'test':
                 this.link = 'http://localhost:3000/'
                 break
             case 'production':
                 this.link = 'http://heroku/'
+                // this.link = 'https://c62d-212-80-48-14.ngrok.io'
                 break
                 default :
                 this.link = 'http://localhost:3000/'

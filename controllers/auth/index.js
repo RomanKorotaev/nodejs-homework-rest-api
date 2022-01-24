@@ -14,22 +14,22 @@ import {
 } from'../../service/email'
 
 import repositoryUsers from '../../repository/users'
-
+import { CustomError } from '../../lib/custom-error'
 
 
 const registration = async (req, res, next) => {
-    try {
       const {email} = req.body;
       const isUserExist = await authService.isUserExist(email);
 
       if (isUserExist) {
-        return  res
-                  .status(HttpCode.CONFLICT)
-                  .json( {
-                    status: 'error',
-                    code: HttpCode.CONFLICT,
-                    message: 'Email is already exist' 
-                  });
+        throw new CustomError(HttpCode.CONFLICT, 'Email is already exist')
+        // return  res
+        //           .status(HttpCode.CONFLICT)
+        //           .json( {
+        //             status: 'error',
+        //             code: HttpCode.CONFLICT,
+        //             message: 'Email is already exist' 
+        //           });
       }
 
       const userData = await authService.create(req.body)
@@ -52,9 +52,7 @@ const emailService = new EmailService(
         code: HttpCode.CREATED,
         data: {...userData, isSendEmailVerify: isSend}
         });
-    } catch (err){
-        next (err);
-    }
+   
 }
 
 
@@ -64,13 +62,14 @@ const emailService = new EmailService(
     const user =  await authService.getUser(email, password);
 
     if (!user) {
-      return  res
-                .status(HttpCode.UNAUTHORIZED)
-                .json( {
-                  status: 'error',
-                  code: HttpCode.UNAUTHORIZED,
-                  message: 'Invalid credentials' 
-                });
+      throw new CustomError(HttpCode.UNAUTHORIZED, 'Invalid credentials')
+      // return  res
+      //           .status(HttpCode.UNAUTHORIZED)
+      //           .json( {
+      //             status: 'error',
+      //             code: HttpCode.UNAUTHORIZED,
+      //             message: 'Invalid credentials' 
+      //           });
     }
 
     const token = authService.getToken(user);
@@ -141,13 +140,14 @@ const emailService = new EmailService(
         status: 'success', code: HttpCode.OK, data: {message: 'Success'}  });
     }
 
-    res
-    .status(HttpCode.BAD_REQUEST)
-    .json({
-      status: 'success',
-      code: HttpCode.BAD_REQUEST,
-      data: {message: 'Invalid token'}
-      });
+    throw new CustomError(HttpCode.BAD_REQUEST, 'Invalid token :-(')
+    // res
+    // .status(HttpCode.BAD_REQUEST)
+    // .json({
+    //   status: 'success',
+    //   code: HttpCode.BAD_REQUEST,
+    //   data: {message: 'Invalid token'}
+    //   });
     
   }
 
@@ -180,19 +180,22 @@ const emailService = new EmailService(
           });
         }   
 
-        return res.status(HttpCode.UE).json({
-          status: 'error',
-          code: HttpCode.UE,
-          data: {message: 'Unprocessable Entity'}
-          });
+        throw new CustomError(HttpCode.SE, 'Service unavailable')
+        // return res.status(HttpCode.SE).json({
+        //   status: 'error',
+        //   code: HttpCode.SE,
+        //   // data: {message: 'Unprocessable Entity'}
+        //   data: {message: 'Service unavailable'}
+        //   });
         
     }
 
-     res.status(HttpCode.NOT_FOUND).json({
-      status: 'error',
-      code: HttpCode.NOT_FOUND,
-      data: {message: 'User with email not found'}
-     });
+    throw new CustomError(HttpCode.NOT_FOUND, 'User with email not found')
+    //  res.status(HttpCode.NOT_FOUND).json({
+    //   status: 'error',
+    //   code: HttpCode.NOT_FOUND,
+    //   data: {message: 'User with email not found'}
+    //  });
  
   }
 
