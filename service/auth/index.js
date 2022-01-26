@@ -11,20 +11,21 @@ class AuthService {
     }
 
     async create (body) {
-        const {id, name, email, role, avatarURL} = await Users.create(body);
+        const {id, name, email, role, avatarURL, verifyTokenEmail } = await Users.create(body);
         return {
             id,
             name,
             email,
             role,
-            avatarURL
+            avatarURL,
+            verifyTokenEmail,
         }
     }
 
     async getUser (email, password) {
         const user = await Users.findByEmail(email);
         const isValidPassword = await user?.isValidPassword(password)
-            if (!isValidPassword) {
+            if (!isValidPassword || !user?.isVerify) {
                 return null;
             }
         return user;
@@ -41,8 +42,6 @@ class AuthService {
         await Users.updateToken (id, token)
     }
 
-
-
      currentUser (token) {
         let data =  Users.findByToken(token)
         console.log ("async currentUser = ", data)
@@ -50,7 +49,6 @@ class AuthService {
     }
 
 }
-
 
 
 export default new  AuthService();
